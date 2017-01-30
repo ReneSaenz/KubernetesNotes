@@ -277,7 +277,7 @@ We’ll cover that in the next module. Now, let’s go to the online terminal an
 
 * Cluster autoscaling - scale the number of nodes in your cluster based on CPU and mem usage; depends on cloud provider
 
-# Summary
+## Summary
 * Kubernetes master exposes an API
 * Kubernetes suns a scheduler and controller services
 * Each node is reponsible for running one or more pods
