@@ -289,6 +289,10 @@ We’ll cover that in the next module. Now, let’s go to the online terminal an
 
 ## The `kubectl` command
 
+* Documentation
+  * Official Kubernetes
+[kubectl overview](https://kubernetes.io/docs/user-guide/kubectl-overview/)
+
 ### Syntax
 The `kubectl` command has the following syntax.
 
@@ -332,7 +336,7 @@ Create resources in a json or yaml file<br>
 `$ kubectl create -f file.yml`
 
 Create resources in a json or yaml file in a directory<br>
-`$ kubectl cerate -f http://www.website.org/asdasd/qwe/`
+`$ kubectl create -f http://www.website.org/asdasd/qwe/`
 
 ### Viewing and Finding Resources
 List all services in the namespace<br>
@@ -356,6 +360,7 @@ Lists pods create by <rc-name> using common prefix<br>
 `$ kubectl describe pods <rc-name>`
 
 List services sorted by name<br>
+Syntax: `kubectl [command] [type] [name] --sort-by=<jsonpath_exp>`<br><br>
 `$ kubectl get services --sort-by=.metadata.name`
 
 List pods sorted by restart count<br>
