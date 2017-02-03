@@ -325,3 +325,89 @@ Example: `$ kubectl get pod -f pod.yml`
 
 * `FLAGS` - specifie optional flags. For example, you can use `-s` or `--server` flags to specify the address and port of the Kubernetes API server.<br>
 ___NOTE:___ Flags that you specify from the command line override default values and any corresponding environment variables.
+
+
+### Creating Objects
+Create resources in a json or yaml file<br>
+`$ kubectl create -f file.yml`
+
+Create resources in a json or yaml file in a directory<br>
+`$ kubectl cerate -f http://www.website.org/asdasd/qwe/`
+
+### Viewing and Finding Resources
+List all services in the namespace<br>
+`$ kubectl get services`
+
+List all pods in all namespaces<br>
+`$ kubectl get pods --all-namespaces`
+
+List all pods in the namespace with more details<br>
+`$ kubectl get pods -o wide`
+
+List a particular replication controller<br>
+`$ kubectl get rc <rc-name>`
+
+#### Verbose output
+`$ kubectl describe nodes <node-name>`
+
+`$ kubectl describe pods <pod-name>`
+
+Lists pods create by <rc-name> using common prefix<br>
+`$ kubectl describe pods <rc-name>`
+
+List services sorted by name<br>
+`$ kubectl get services --sort-by=.metadata.name`
+
+List pods sorted by restart count<br>
+`$ kubectl get pods --sort-by=.status.containerStatuses[0].restartCount`
+
+Get the version label of all pods with label app=cassandra<br>
+`$ kubectl get pods --selector=app=cassandra rc -o 'jsonpath={.items[*].metadata.labels.version}'`
+
+Get external IPs of all nodes<br>
+`$ kubectl get nodes -o jsonpath='{.items[*].status.addresses[?(@.type=ExternalIP)].address}'`
+
+List names of pods that belong to a particular replication controller<br>
+"jq" command useful for transformations that are too complex for jsonpath
+```
+$ sel=$(./kubectl get rc <rc-name> --output=json | jq -j '.spec.selector | to_entries | .[] | "\(.key)=\(.value),"')
+$ sel=${sel%?} # Remove trailing comma
+$ pods=$(kubectl get pods --selector=$sel --output=jsonpath={.items..metadata.name})
+```
+
+Check which nodes are ready<br>
+`$ kubectl get nodes -o jsonpath='{range .items[*]}{@.metadata.name}:{range @.status.conditions[*]}{@.type}={@.status};{end}{end}'| tr ';' "\n"  | grep "Ready=True"`
+
+### Modifying and Deleting resources
+
+Add a label<br>
+`$ kubectl label pods <pod-name> new-label=awesome`
+
+Add an annotation<br>
+`$ kubectl annotate pods <pod-name> icon-url=http://goo.gl/qweqwe`
+
+
+### Interacting with running pods
+dump pod logs (stdout)<br>
+`$ kubectl logs <pod-name>`
+
+stream pod logs (stdout) until canceled (ctrl-c) or timeout<br>
+`$ kubectl logs -f <pod-name>`
+
+Run pod as interactive shell<br>
+`$ kubectl run -i --tty busybox --image=busybox -- sh`
+
+Attach to Running Container<br>
+`$ kubectl attach <podname> -i`
+
+Forward port of Pod to your local machine<br>
+`$ kubectl port-forward <podname> <local-and-remote-port>`
+
+Forward port to service<br>
+`$ kubectl port-forward <servicename> <port>`
+
+Run command in existing pod (1 container case)<br>
+`$ kubectl exec <pod-name> -- ls /`
+
+Run command in existing pod (multi-container case)<br>
+`$ kubectl exec <pod-name> -c <container-name> -- ls /`  
