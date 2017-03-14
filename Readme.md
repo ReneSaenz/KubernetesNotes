@@ -57,13 +57,13 @@ ___
 
 ## Kubernetes Cluster
 A Kubernetes cluster is composed by two type of resources
-* Master: The Master is responsible for managing the cluster.
+* Master(controller): The Master is responsible for managing the cluster.
 The master coordinates all activities in your cluster, such as
 scheduling applications, maintaining applications' desired state,
 scaling applications, and rolling out new updates.
 
 
-* Node: A node is a VM or a physical computer that serves as a worker
+* Worker(node): A node is a VM or a physical computer that serves as a worker
 machine in a Kubernetes cluster.
 Each node has a Kubelet, which is an agent for managing the node and
 communicating with the Kubernetes master.
