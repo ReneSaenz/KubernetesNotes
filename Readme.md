@@ -98,7 +98,8 @@ End users can also use the Kubernetes API directly to interact with the cluster.
 
 * Pod: A group of one or more CONTAINERS that are always co-located, co-scheduled and run in a shared context
 * kube-proxy: Responsible for maintaning the network configuration.
-* kubelet: Responsible talking to the API, to report the current state of a node to the master
+* kubelet: The kubelet is the orchestrator of containers on each host in the 
+  Kubernetes cluster — it starts and stops containers, configures pod mounts, and other low-level, essential tasks.
 * supervisord: process manager. Allow to run multiple processes inside another process
 * fluentd: Responsible for managing logs
 * Add-ons: Additional functionality. For example DNS
@@ -151,8 +152,7 @@ __NOTE:__ Containers should only be scheduled together in a single Pod if they a
 
 Every Kubernetes Node runs at least:
 
-* Kubelet, a process responsible for communication between the Kubernetes Master and the Nodes;
-it manages the Pods and the containers running on a machine.
+* The kubelet process - the orchestrator of containers on each host in the Kubernetes cluster — it starts and stops containers, configures pod mounts, and other low-level, essential tasks.
 * A container runtime responsible for pulling the container image from a registry, unpacking the container,
 and running the application.
 
