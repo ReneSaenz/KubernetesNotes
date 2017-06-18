@@ -83,10 +83,22 @@ End users can also use the Kubernetes API directly to interact with the cluster.
 
 ### Kubernetes server contains
 
-* Exposes the Kubernetes Server API -> (API, CLI, UI)
-* Scheduler: Process to manage pods accross multiple nodes
-* Controller: Overall coordination and health of the cluster ensuring the nodes and up and running in the desired configuration state.
+* kube-apiserver -> provides REST api endpoint.
+* kube-scheduler -> Process to manage pods accross multiple nodes. Decides which nodes will run the containers defined in Pods
+* kube-controller-manager -> Overall coordination and health of the cluster ensuring the nodes and up and running in the desired configuration state. Maintains the state of the Pods as defined in manifest.
 * etcd: Central key-value pair DB that stores the cluster state
+
+
+These following components are the control plane
+* API Server
+* Scheduler
+* Controller Manager
+
+Each component is run on the master because:
+* The scheduler and controller are tightly coupled with the API server.
+* Only one scheduler and controller manager can be active at any given time (it is fine if more then one is running) Each componenet will select the leader.
+* Running multiple copies of each component is required for HA
+* Running each component next to the API server, facilitates configuration.
 
 ### Kubernetes Node
 
@@ -97,9 +109,9 @@ End users can also use the Kubernetes API directly to interact with the cluster.
 ### Kubernetes node contains
 
 * Pod: A group of one or more CONTAINERS that are always co-located, co-scheduled and run in a shared context
-* kube-proxy: Responsible for maintaning the network configuration.
-* kubelet: The kubelet is the orchestrator of containers on each host in the 
-  Kubernetes cluster — it starts and stops containers, configures pod mounts, and other low-level, essential tasks.
+* kube-proxy: Used by `services` to create `iptable` rules to connect to Pods
+* kubelet: The kubelet is the orchestrator of containers on each host in the
+  Kubernetes cluster — talks to `Docker` to start/stop containers, configures pod mounts, and other low-level, essential tasks.
 * supervisord: process manager. Allow to run multiple processes inside another process
 * fluentd: Responsible for managing logs
 * Add-ons: Additional functionality. For example DNS
