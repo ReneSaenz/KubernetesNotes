@@ -403,6 +403,9 @@ Add a label<br>
 Add an annotation<br>
 `$ kubectl annotate pods <pod-name> icon-url=http://goo.gl/qweqwe`
 
+Delete a pod<br>
+`kubectl delete pod <pod-name> --namespace <namespace> --grace-period=0 --force`
+
 
 ### Interacting with running pods
 dump pod logs (stdout)<br>
