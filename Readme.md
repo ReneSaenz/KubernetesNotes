@@ -2,68 +2,31 @@
 
 ## What is Kubernetes
 
-* Kubernetes: greek for captain or pilot
-* Inspired from an internal google project called 'Borg'
-* Open Source project managed by Linux Foundation
-* Has a distributed architecture and is highly API centered
-* Decouples applications from hardware via containers
-* Automates application configuration through service discovery
-
-___
-
-
-## Contributing to the open-source project
-### Download the source code
-To contribute, create a GitHub account and Fork the project from
-[GitHub Kubernetes](https://github.com/kubernetes/kubernetes)
-
-__NOTE:__ Project needs to be downloaded and placed under GOPATH. Please refer to [golang.org](https://golang.org/doc/code.html)
-This project expects to be found at the Go package `k8s.io/kubernetes`
-
-In order to have this setup, perform the following:
-`git clone https://github.com/kubernetes/kubernetes $GOPATH/src/k8s.io/kubernetes`
-
-### Building the Project
-1. The human interface to the kubernetes build is __make__
-2. Some parts of the build/test system depend on __docker__
-3. Kubernetes is written in __Go__ You need a recent version of [Go toolchain](https://golang.org/dl/)
-
-To build Kubernetes, execute the __make__ command inside the main source code directory.
-
-`cd $GOPATH/src/k8s.io/kubernetes` and then type `make`
-
-If you want to build a subset of code, you can pass the __WHAT__ variable to __make__
-`make WHAT="cmd/kubelet"`
-
-To run basic tests, type `make test`. This will run all the tests in the project.
-If you want to just test a subset of the project, you can pass the __WHAT__ variable to __make__
-`make test WHAT=pkg/kubelet`
-
-[Development Guide](https://github.com/kubernetes/community/blob/master/contributors/devel/development.md)
-
-
-If your code has dependencies on new packages, manage it with [godep](https://github.com/tools/godep)
-
-___
+- Kubernetes: greek for captain or pilot
+- Inspired from an internal google project called 'Borg'
+- Open Source project managed by Linux Foundation
+- Has a distributed architecture and is highly API centered
+- Decouples applications from hardware via containers
+- Automates application configuration through service discovery
 
 
 ## Terminology
-* Containers: Units of packaging
-* Pod: Units of deployment (contain one or more containers)
-* Nodes: Hosts that run applications (contain one or more pods)
-* Service: Collection of pods exposed as an endpoint
-* Labels: key-value pairs for identification
-* Replication Controller: Ensures availability and scalability
+- Containers: Units of packaging
+- Pod: Units of deployment (contain one or more containers)
+- Nodes: Hosts that run applications (contain one or more pods)
+- Service: Collection of pods exposed as an endpoint
+- Labels: key-value pairs for identification
+- Replication Controller: Ensures availability and scalability
 
 ## Kubernetes Cluster
 A Kubernetes cluster is composed by two type of resources
-* Master(controller): The Master is responsible for managing the cluster.
+- Master(controller): The Master is responsible for managing the cluster.
 The master coordinates all activities in your cluster, such as
 scheduling applications, maintaining applications' desired state,
 scaling applications, and rolling out new updates.
 
 
-* Worker(node): A node is a VM or a physical computer that serves as a worker
+- Worker(node): A node is a VM or a physical computer that serves as a worker
 machine in a Kubernetes cluster.
 Each node has a Kubelet, which is an agent for managing the node and
 communicating with the Kubernetes master.
@@ -80,78 +43,77 @@ the master exposes.
 End users can also use the Kubernetes API directly to interact with the cluster.
 
 
-
 ### Kubernetes server contains
 
-* kube-apiserver -> provides REST api endpoint.
-* kube-scheduler -> Process to manage pods accross multiple nodes. Decides which nodes will run the containers defined in Pods
-* kube-controller-manager -> Overall coordination and health of the cluster ensuring the nodes and up and running in the desired configuration state. Maintains the state of the Pods as defined in manifest.
-* etcd: Central key-value pair DB that stores the cluster state
+- kube-apiserver -> provides REST api endpoint.
+- kube-scheduler -> Process to manage pods accross multiple nodes. Decides which nodes will run the containers defined in Pods
+- kube-controller-manager -> Overall coordination and health of the cluster ensuring the nodes and up and running in the desired configuration state. Maintains the state of the Pods as defined in manifest.
+- etcd: Central key-value pair DB that stores the cluster state
 
 
 These following components are the control plane
-* API Server
-* Scheduler
-* Controller Manager
+- API Server
+- Scheduler
+- Controller Manager
 
 Each component is run on the master because:
-* The scheduler and controller are tightly coupled with the API server.
-* Only one scheduler and controller manager can be active at any given time (it is fine if more then one is running) Each componenet will select the leader.
-* Running multiple copies of each component is required for HA
-* Running each component next to the API server, facilitates configuration.
+- The scheduler and controller are tightly coupled with the API server.
+- Only one scheduler and controller manager can be active at any given time (it is fine if more then one is running) Each componenet will select the leader.
+- Running multiple copies of each component is required for HA
+- Running each component next to the API server, facilitates configuration.
 
 ### Kubernetes Node
 
-* A host that runs an application. Nodes do the heavy lifting
-* Responsible for running multiple pods
-* A node can contain multiple pods of different sizes
+- A host that runs an application. Nodes do the heavy lifting
+- Responsible for running multiple pods
+- A node can contain multiple pods of different sizes
 
 ### Kubernetes node contains
 
-* Pod: A group of one or more CONTAINERS that are always co-located, co-scheduled and run in a shared context
-* kube-proxy: Used by `services` to create `iptable` rules to connect to Pods
-* kubelet: The kubelet is the orchestrator of containers on each host in the
+- Pod: A group of one or more CONTAINERS that are always co-located, co-scheduled and run in a shared context
+- kube-proxy: Used by `services` to create `iptable` rules to connect to Pods
+- kubelet: The kubelet is the orchestrator of containers on each host in the
   Kubernetes cluster — talks to `Docker` to start/stop containers, configures pod mounts, and other low-level, essential tasks.
-* supervisord: process manager. Allow to run multiple processes inside another process
-* fluentd: Responsible for managing logs
-* Add-ons: Additional functionality. For example DNS
+- supervisord: process manager. Allow to run multiple processes inside another process
+- fluentd: Responsible for managing logs
+- Add-ons: Additional functionality. For example DNS
 
 ### Kubernetes Pod
 
-* Documentation
-  * [Pod Documentation](http://kubernetes.io/docs/user-guide/pods)
-  * [Pod States](http://kubernetes.io/docs/user-guide/pod-states)  (lifecycle)
+- Documentation
+  - [Pod Documentation](http://kubernetes.io/docs/user-guide/pods)
+  - [Pod States](http://kubernetes.io/docs/user-guide/pod-states)  (lifecycle)
 
 When you create a deployment, Kubernetes creates a Pod to host your application instance.
 A Pod is Kubernetes abstraction that represents a group of one or more
 application containers, and some shared resources for those containers.
 Those resources include:
 
-* Shared storage, as Volumes
-* Networking, as a unique cluster IP address
-* Information about how to run each container, such as the container image version or specific ports to use
-* A Pod is a group of one or more application containers and includes shared storage (volumes), IP address and information about how to run them.
+- Shared storage, as Volumes
+- Networking, as a unique cluster IP address
+- Information about how to run each container, such as the container image version or specific ports to use
+- A Pod is a group of one or more application containers and includes shared storage (volumes), IP address and information about how to run them.
 
 A Pod models an application-specific “logical host” and can contain different application containers which are relatively tightly coupled.
 For example, a Pod might include both the container with your Node.js app as well as a different container that feeds the data to be published by the Node.js webserver.
 The containers in a Pod share an IP Address and port space, are always co-located and co-scheduled, and run in a shared context on the same Node.
 
 
-* Pod: A group of one or more CONTAINERS that are always co-located, co-scheduled and run in a shared context. For example, Redis cache and Apache web server
-* A pod models an application-specific "logical host" - It contains one or more application containers which are relatively tightly-coupled
-* Fundamental unit of deployment in Kubernetes
-* Containers in the same pod have the same hostname
-* Modeled like a virtual machine
-  * Each container represents a process
-  * Tightly coupled with other containers in the same pod
-* Each pod is isolated by
-  * Process ID (PID)
-  * Network namespace
-  * Inter-process communication (IPC) namespace
-  * Unix time sharing (UTS) namespace
+- Pod: A group of one or more CONTAINERS that are always co-located, co-scheduled and run in a shared context. For example, Redis cache and Apache web server
+- A pod models an application-specific "logical host" - It contains one or more application containers which are relatively tightly-coupled
+- Fundamental unit of deployment in Kubernetes
+- Containers in the same pod have the same hostname
+- Modeled like a virtual machine
+  - Each container represents a process
+  - Tightly coupled with other containers in the same pod
+- Each pod is isolated by
+  - Process ID (PID)
+  - Network namespace
+  - Inter-process communication (IPC) namespace
+  - Unix time sharing (UTS) namespace
 
 
-___Pods are the atomic unit on the Kubernetes platform.___ When we create a Deployment on Kubernetes, that Deployment creates Pods with containers inside them (as opposed to creating containers directly).
+**Pods are the atomic unit on the Kubernetes platform** When we create a Deployment on Kubernetes, that Deployment creates Pods with containers inside them (as opposed to creating containers directly).
 Each Pod is tied to the Node where it is scheduled, and remains there until termination (according to restart policy) or deletion.
 In case of a Node failure, identical Pods are scheduled on other available Nodes in the cluster.
 
@@ -160,7 +122,7 @@ Each Node is managed by the Master.
 A Node can have multiple pods, and the Kubernetes master automatically handles scheduling the pods across the Nodes in the cluster.
 The Master's automatic scheduling takes into account the available resources on each Node.
 
-__NOTE:__ Containers should only be scheduled together in a single Pod if they are tightly coupled and need to share resources such as disk.
+**NOTE:** Containers should only be scheduled together in a single Pod if they are tightly coupled and need to share resources such as disk.
 
 Every Kubernetes Node runs at least:
 
@@ -169,11 +131,10 @@ Every Kubernetes Node runs at least:
 and running the application.
 
 
-
-
 ## Kubernetes Services
 
 While Pods do have their own unique IP across the cluster, those IP’s are not exposed outside Kubernetes.
+Services are meant to be long-lasting objects in Kubernetes.
 Taking into account that over time Pods may be terminated, deleted or replaced by other Pods, we need a way
 to let other Pods and applications automatically discover each other.
 Kubernetes addresses this by grouping Pods in Services.
@@ -197,15 +158,16 @@ This will for example allow a frontend service (like a web server) to receive tr
 
 Services match a set of Pods using Label Selectors, a grouping primitive that allows logical operation on Labels.
 
-*__Labels__* are key/value pairs that are attached to objects, such as Pods and you can think of them as hashtags from social media. They are used to organize related objects in a way meaningful to the users like:
+**Labels** are key/value pairs that are attached to objects, such as Pods and you can think of them as hashtags from social media. They are used to organize related objects in a way meaningful to the users like:
 
 * Production environment (production, test, dev)
 * Application version (beta, v1.3)
 * Type of service/server (frontend, backend, database)
 
-__NOTE:__ Labels are key/value pairs that are attached to objects
+**NOTE:** Labels are key/value pairs that are attached to objects
 
-Labels can be attached to objects at the creation time or later and can be modified at any time. The kubectl run command sets some default Labels/Label Selectors on the new Pods/ Deployment.
+Labels can be attached to objects at the creation time or later and can be modified at any time. 
+The kubectl run command sets some default Labels/Label Selectors on the new Pods/ Deployment.
 The link between Labels and Label Selectors defines the relationship between the Deployment and the Pods it creates.
 
 
@@ -340,7 +302,7 @@ point to using YAML over JSON.<br>
 Example: `$ kubectl get pod -f pod.yml`
 
 * `FLAGS` - specifie optional flags. For example, you can use `-s` or `--server` flags to specify the address and port of the Kubernetes API server.<br>
-___NOTE:___ Flags that you specify from the command line override default values and any corresponding environment variables.
+**NOTE:** Flags that you specify from the command line override default values and any corresponding environment variables.
 
 
 ### Creating Objects
@@ -431,3 +393,6 @@ Run command in existing pod (1 container case)<br>
 
 Run command in existing pod (multi-container case)<br>
 `$ kubectl exec <pod-name> -c <container-name> -- ls /`  
+
+### Resources
+- [Core OS Kubernetes Cluster](https://github.com/coreos/coreos-kubernetes)
